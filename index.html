@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frailejón 3D</title>
+    <style>body { margin: 0; background: #1a1a1a; }</style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+
+    <script>
+        // Cambiamos un poco la estructura para que sea más compatible
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Geometría del Frailejón
+        const trunk = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.2, 0.3, 2, 12),
+            new THREE.MeshStandardMaterial({ color: 0x5d4037 })
+        );
+        scene.add(trunk);
+
+        const light = new THREE.PointLight(0xffffff, 50);
+        light.position.set(2, 5, 5);
+        scene.add(light);
+        scene.add(new THREE.AmbientLight(0x404040));
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            trunk.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+
+        // Interacción simple
+        window.addEventListener('mousedown', () => {
+            trunk.scale.y += 0.2;
+            trunk.material.color.setHex(Math.random() * 0xffffff);
+        });
+
+        animate();
+    </script>
+</body>
+</html>
